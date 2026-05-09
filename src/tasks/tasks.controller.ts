@@ -67,6 +67,6 @@ export class TasksController {
   @Delete(':id')
   deleteTask(@Request() req, @Param('id') taskId: string) {
     const user = req.user;
-    return this.taskService.task(Number(taskId), user.id);
+    return this.taskService.deleteTask(Number(taskId), user.id);
   }
 }

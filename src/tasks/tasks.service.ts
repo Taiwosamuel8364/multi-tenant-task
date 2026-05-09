@@ -83,6 +83,11 @@ export class TasksService {
     if (!task) {
       throw new NotFoundException(`The task with id: ${id} does not exist`);
     }
+
+    return {
+      message: 'Task updated successfully',
+      id: id,
+    };
   }
 
   // Deleting a task
@@ -97,5 +102,10 @@ export class TasksService {
     if (!task) {
       throw new NotFoundException(`The task with id: ${taskId} does not exist`);
     }
+
+    return {
+      message: 'Task deleted successfully',
+      id: taskId,
+    };
   }
 }
