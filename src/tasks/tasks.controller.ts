@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Request,
   UseGuards,
@@ -17,6 +19,7 @@ import { CreateTaskDto } from './dto/tasks-dto.dto';
 export class TasksController {
   constructor(private readonly taskService: TasksService) {}
 
+  // Create task
   @UseGuards(jwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('create')
@@ -29,10 +32,40 @@ export class TasksController {
     return this.taskService.createTask(data, user.id);
   }
 
+  // Get a particular task
   @UseGuards(jwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  getUser(@Request() req, @Param('id') taskId: string) {
+  getTask(@Request() req, @Param('id') taskId: string) {
+    const user = req.user;
+    return this.taskService.task(Number(taskId), user.id);
+  }
+
+  @UseGuards(jwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Patch(':id')
+  updateTask(
+    @Request() req,
+    @Body() createTaskDto: CreateTaskDto,
+    @Param('id') taskId: string,
+  ) {
+    const user = req.user;
+    const data = {
+      title: createTaskDto.title ?? '',
+      content: createTaskDto.content ?? '',
+    };
+    return this.taskService.updateTask(
+      { where: { id: Number(taskId) }, data: data },
+      Number(taskId),
+      user.id,
+    );
+  }
+
+  // Delete a task
+  @UseGuards(jwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Delete(':id')
+  deleteTask(@Request() req, @Param('id') taskId: string) {
     const user = req.user;
     return this.taskService.task(Number(taskId), user.id);
   }

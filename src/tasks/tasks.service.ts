@@ -71,7 +71,7 @@ export class TasksService {
     ownerId,
   ) {
     const { where, data } = params;
-    return this.prisma.task.updateMany({
+    const task = this.prisma.task.updateMany({
       data,
       where: {
         ...where,
@@ -79,15 +79,23 @@ export class TasksService {
         authorId: ownerId,
       },
     });
+
+    if (!task) {
+      throw new NotFoundException(`The task with id: ${id} does not exist`);
+    }
   }
 
   // Deleting a task
   async deleteTask(taskId: number, userId: number) {
-    return this.prisma.task.deleteMany({
+    const task = this.prisma.task.deleteMany({
       where: {
         id: taskId,
         authorId: userId,
       },
     });
+
+    if (!task) {
+      throw new NotFoundException(`The task with id: ${taskId} does not exist`);
+    }
   }
 }
