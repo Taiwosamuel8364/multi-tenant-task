@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth-dto.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { jwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
