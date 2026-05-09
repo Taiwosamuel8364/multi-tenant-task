@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Task, Prisma } from '@prisma/client';
 
@@ -8,12 +8,18 @@ export class TasksService {
 
   // Finding a specfic task of a particular User
   async task(id, ownerId): Promise<Task | null> {
-    return this.prisma.task.findFirst({
+    const task = await this.prisma.task.findFirst({
       where: {
         id: id,
         authorId: ownerId,
       },
     });
+
+    if (!task) {
+      throw new NotFoundException(`The task with id: ${id} does not exist`);
+    }
+
+    return task;
   }
 
   // Getting all the task of a particular user

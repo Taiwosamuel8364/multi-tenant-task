@@ -13,7 +13,7 @@ import { jwtStrategy } from './strategies/jwt.strategy';
     JwtModule.register({
       global: true,
       secret: 'abcdefghijklmnopqrstUVwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-      signOptions: { expiresIn: '120s' },
+      signOptions: { expiresIn: '1d' },
     }),
     PassportModule,
   ],

@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   Request,
   UseGuards,
@@ -25,5 +27,13 @@ export class TasksController {
       content: createTaskDto.content ?? '',
     };
     return this.taskService.createTask(data, user.id);
+  }
+
+  @UseGuards(jwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Get(':id')
+  getUser(@Request() req, @Param('id') taskId: string) {
+    const user = req.user;
+    return this.taskService.task(Number(taskId), user.id);
   }
 }
