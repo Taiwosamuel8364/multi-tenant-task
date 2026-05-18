@@ -92,14 +92,13 @@ export class TasksService {
 
   // Deleting a task
   async deleteTask(taskId: number, userId: number) {
-    const task = this.prisma.task.deleteMany({
+    const task = await this.prisma.task.deleteMany({
       where: {
         id: taskId,
         authorId: userId,
       },
     });
-
-    if (!task) {
+    if (task.count == 0) {
       throw new NotFoundException(`The task with id: ${taskId} does not exist`);
     }
 
@@ -107,5 +106,7 @@ export class TasksService {
       message: 'Task deleted successfully',
       id: taskId,
     };
+    // return task;
+
   }
 }

@@ -41,6 +41,7 @@ export class TasksController {
     return this.taskService.task(Number(taskId), user.id);
   }
 
+  // Update a task
   @UseGuards(jwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
